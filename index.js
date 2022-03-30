@@ -2,11 +2,8 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import { Server } from 'socket.io';
-import { PeerServer } from 'peer';
-/*const peerServer = PeerServer({
-  port: 3003,
-  path: '/flash-trivia'
-});*/
+//import { PeerServer } from 'peer';
+//const peerServer = PeerServer({ port: 3003, path: '/flash-trivia' });
 
 const app = express();
 app.use(cors());
@@ -18,7 +15,7 @@ const io = new Server(server, {
   }
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4001;
 let users = [];     // Keep track of all user
 
 const disconnectDuplicate = (newUserId) => {
