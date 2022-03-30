@@ -3,10 +3,10 @@ import http from 'http';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import { PeerServer } from 'peer';
-const peerServer = PeerServer({
+/*const peerServer = PeerServer({
   port: 3003,
   path: '/flash-trivia'
-});
+});*/
 
 const app = express();
 app.use(cors());
