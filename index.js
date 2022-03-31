@@ -80,7 +80,12 @@ io.on('connection', (socket) => {
         "userMsg": playerLeavingUpdate
       });
       console.log("Leaving")
-      delete roomQuestion[`${userRoom}`];
+
+      // Delete questions associating with a room if there are no other users in the game, else keep
+      const clientsSize = io.sockets.adapter.rooms.get(userRoom);
+      if (!clientsSize) {
+        delete roomQuestion[`${userRoom}`];
+      }
     });
   });
 
