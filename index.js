@@ -16,30 +16,30 @@ const io = new Server(server, {
 });
 
 const PORT = process.env.PORT || 4001;
-let users = [];     // Keep track of all user
+let roomQuestion = {};
 
-const disconnectDuplicate = (newUserId) => {
-  const usersCopy = users.filter(curr => {
-    return curr.userId === newUserId;
-  });
-  return usersCopy.length !== 0;
-};
+
 
 io.on('connection', (socket) => {
   console.log("------------------------------------------------------");
   console.log(`A connected user: ${socket.id}`);
+  console.log(roomQuestion);
+
+  // Link the question with the room
+  socket.on('existing-questions', data => {
+    const existing = roomQuestion[`${data.room}`];
+    if (existing) {
+      socket.emit('existing-questions', [existing, socket.id]);
+    } else {
+      roomQuestion[`${data.room}`] = data.questions;
+      socket.emit('existing-questions', [data.questions, socket.id]);
+    }
+  })
 
   // A new player has joined, emit the playerData specifically in that room to inform the others
   socket.on("join-game", (dataChunk) => {
     console.log(io.engine.clientsCount);
     const { userId, userName, userRoom, userMsg} = dataChunk;
-
-    // if the userId is already contained within the users[], then disconnect the socket
-    if (disconnectDuplicate(userId)) {
-      io.disconnectSockets(true);
-    } else {
-      users.push({"userId": userId, "userName": userName, "userRoom": userRoom});
-    }
 
     // Inform the other players in the game room that a player has joined in with them
     socket.join(userRoom);
@@ -68,9 +68,6 @@ io.on('connection', (socket) => {
     // Inform the other players in the game room that a player has left
     socket.on("disconnect", () => {
       socket.leave(userRoom);
-      users = users.filter(curr => {
-        return curr.userId !== userId;
-      })
 
       // msg updating the chatroom that the player has left
       const playerLeavingUpdate = `I have left the game at
@@ -83,6 +80,7 @@ io.on('connection', (socket) => {
         "userMsg": playerLeavingUpdate
       });
       console.log("Leaving")
+      delete roomQuestion[`${userRoom}`];
     });
   });
 
