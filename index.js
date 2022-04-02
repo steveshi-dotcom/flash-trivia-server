@@ -18,12 +18,9 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 4001;
 let roomQuestion = {};
 
-
-
 io.on('connection', (socket) => {
   console.log("------------------------------------------------------");
   console.log(`A connected user: ${socket.id}`);
-  console.log(roomQuestion);
 
   // Link the question with the room
   socket.on('existing-questions', data => {
@@ -34,11 +31,10 @@ io.on('connection', (socket) => {
       roomQuestion[`${data.room}`] = data.questions;
       socket.emit('existing-questions', [data.questions, socket.id]);
     }
-  })
+  });
 
   // A new player has joined, emit the playerData specifically in that room to inform the others
   socket.on("join-game", (dataChunk) => {
-    console.log(io.engine.clientsCount);
     const { userId, userName, userRoom, userMsg} = dataChunk;
 
     // Inform the other players in the game room that a player has joined in with them
