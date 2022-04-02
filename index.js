@@ -61,6 +61,12 @@ io.on('connection', (socket) => {
       io.to(userRoom).emit("meet-up", peerId);
     });
 
+    // Send the trivia answer board for result page
+    socket.on('obtain-answer-board', roomNum => {
+      console.log(roomQuestion[`${roomNum}`]);
+      io.emit('obtain-answer-board', roomQuestion[`${roomNum}`]);
+    })
+
     // Inform the other players in the game room that a player has left
     socket.on("disconnect", () => {
       socket.leave(userRoom);
@@ -85,9 +91,6 @@ io.on('connection', (socket) => {
     });
   });
 
-  socket.on("Hello", hello => {
-    console.log(hello);
-  })
   //------------------------------------------------------
   socket.on('disconnect', (reason) => {
     console.log(`A disconnected user: ${socket.id}`);
