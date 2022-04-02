@@ -21,6 +21,7 @@ let roomQuestion = {};
 io.on('connection', (socket) => {
   console.log("------------------------------------------------------");
   console.log(`A connected user: ${socket.id}`);
+  //console.log(Object.keys(roomQuestion).length);
 
   // Link the question with the room
   socket.on('existing-questions', data => {
@@ -81,7 +82,6 @@ io.on('connection', (socket) => {
         "userName": userName,
         "userMsg": playerLeavingUpdate
       });
-      console.log("Leaving")
 
       // Delete questions associating with a room if there are no other users in the game, else keep
       const clientsSize = io.sockets.adapter.rooms.get(userRoom);
