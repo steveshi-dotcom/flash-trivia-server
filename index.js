@@ -15,6 +15,10 @@ const io = new Server(server, {
   }
 });
 
+app.get('/stevesayshi', (req, res) => {
+  res.send('Hello from Steve Shi!')
+})
+
 const PORT = process.env.PORT || 4001;
 let roomQuestion = {};
 
