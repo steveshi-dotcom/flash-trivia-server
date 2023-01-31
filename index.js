@@ -15,9 +15,9 @@ const io = new Server(server, {
   }
 });
 
-app.get('/stevesayshi', (req, res) => {
-  res.send('Hello from Steve Shi!')
-})
+app.use("/steveshi", (req, res) => {
+  res.json({ message: "Hello From Express App" });
+});
 
 const PORT = process.env.PORT || 4001;
 let roomQuestion = {};
