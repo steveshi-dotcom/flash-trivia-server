@@ -18,7 +18,7 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 4001;
 let roomQuestion = {};
 
-app.use("/steveshi", (req, res) => {
+app.use("/", (req, res) => {
   res.json({ message: "Hello From Steve Shi :)" });
 });
 
