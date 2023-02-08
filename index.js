@@ -21,6 +21,9 @@ let roomQuestion = {};
 app.use("/", (req, res) => {
   res.json({ message: "Hello From Steve Shi :)" });
 });
+app.use("/steve", (req, res) => {
+  res.sendStatus(200)
+});
 
 io.on('connection', (socket) => {
   console.log("------------------------------------------------------");
